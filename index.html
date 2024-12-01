@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BDIX FTP সার্ভার URL Checker | URL Validator</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Advanced BDIX FTP সার্ভার URL validator - রিয়েল-টাইম URL checking and performance analysis">
+    <meta name="keywords" content="BDIX, FTP, সার্ভার, URL, validator, checker, performance, network, connectivity, বাংলাদেশ">
+    
+    <!-- Open Graph Protocol Tags -->
+    <meta property="og:title" content="BDIX FTP সার্ভার URL Checker">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="রিয়েল-টাইম FTP সার্ভার URL ভ্যালিডেশন">
+    <meta property="og:image" content="https://example.com/bdix-validator-og-image.png">
+    
+    <!-- External CDN Imports -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --background-color: #f4f4f4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Kalpurush', Arial, sans-serif;
+            line-height: 1.6;
+            background-color: var(--background-color);
+            color: var(--primary-color);
+        }
+
+        /* Animated Backgrounds */
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container-fluid {
+            background: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%);
+            background-size: 400% 400%;
+            animation: gradient-animation 15s ease infinite;
+            color: white;
+        }
+
+        /* Responsive Grid */
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        /* Animated Result Boxes */
+        .result-box {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 1rem;
+            transition: all 0.3s ease;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .result-box:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Animated Loader */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Telegram Join Popup */
+        .telegram-popup {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #0088cc;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 1000;
+            animation: bounce 1s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+
+        /* Responsive Footer */
+        footer {
+            background-color: rgba(0,0,0,0.8);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        /* Language Toggle */
+        .lang-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Language Toggle -->
+    <div class="lang-toggle">
+        <button class="btn btn-outline-light" id="langToggle">
+            <i class="fas fa-language"></i> EN/বাং
+        </button>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container-fluid py-5">
+        <div class="container">
+            <header class="text-center mb-4">
+                <h1><i class="fas fa-server"></i> BDIX FTP সার্ভার URL Checker</h1>
+                <p>রিয়েল-টাইম URL কানেক্টিভিটি পরীক্ষা | Real-time URL Connectivity Check</p>
+            </header>
+
+            <!-- Loader -->
+            <div id="loader" class="loader"></div>
+
+            <!-- Results Grid -->
+            <div class="result-grid" id="resultsContainer">
+                <div class="result-box" id="totalResult">
+                    <h3><i class="fas fa-list-ol"></i> Total URLs</h3>
+                    <p>Loading...</p>
+                </div>
+                <div class="result-box" id="validResult">
+                    <h3><i class="fas fa-check-circle text-success"></i> Valid URLs</h3>
+                    <p>Valid URLs will appear here</p>
+                </div>
+                <div class="result-box" id="invalidResult">
+                    <h3><i class="fas fa-times-circle text-danger"></i> Invalid URLs</h3>
+                    <p>Invalid URLs will appear here</p>
+                </div>
+            </div>
+
+            <!-- Download Button -->
+            <div class="text-center mt-4">
+                <a href="#" id="downloadBtn" class="btn btn-light d-none">
+                    <i class="fas fa-download"></i> Download Valid URLs
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Telegram Join Popup -->
+    <div class="telegram-popup">
+        <a href="https://t.me/RektDevelopers" target="_blank" class="text-white text-decoration-none">
+            <i class="fab fa-telegram"></i> Join Rekt Developers
+        </a>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <p>
+                        <i class="fas fa-code"></i> Developed with <i class="fas fa-heart text-danger"></i> by Rekt Developers
+                    </p>
+                    <div class="social-links">
+                        <a href="https://t.me/RektDevelopers" class="text-white mx-2"><i class="fab fa-telegram"></i></a>
+                        <a href="#" class="text-white mx-2"><i class="fab fa-github"></i></a>
+                        <a href="#" class="text-white mx-2"><i class="fab fa-discord"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Advanced URL Checking Function
+        async function checkUrls() {
+            const loader = document.getElementById('loader');
+            const totalResult = document.getElementById('totalResult').querySelector('p');
+            const validResult = document.getElementById('validResult').querySelector('p');
+            const invalidResult = document.getElementById('invalidResult').querySelector('p');
+            const downloadBtn = document.getElementById('downloadBtn');
+
+            // Reset results
+            validResult.innerHTML = '';
+            invalidResult.innerHTML = '';
+            loader.style.display = 'block';
+
+            try {
+                // Fetch URLs with enhanced error handling
+                const response = await fetch('server.txt', { 
+                    method: 'GET', 
+                    cache: 'no-cache',
+                    signal: AbortSignal.timeout(15000)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to fetch server.txt');
+                }
+
+                const urlText = await response.text();
+                const urls = urlText.split('\n')
+                    .map(url => url.trim())
+                    .filter(url => url && url.startsWith('http'));
+
+                const total = urls.length;
+                let valid = 0;
+                let invalid = 0;
+                const validUrls = [];
+
+                // Update total count
+                totalResult.innerHTML = `Total URLs: ${total}`;
+
+                // Enhanced URL checking with improved concurrency
+                const checkUrl = async (url) => {
+                    try {
+                        const controller = new AbortController();
+                        const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+                        const res = await fetch(url, { 
+                            method: 'HEAD', 
+                            signal: controller.signal,
+                            mode: 'no-cors',
+                            referrerPolicy: 'no-referrer'
+                        });
+
+                        clearTimeout(timeoutId);
+
+                        if (res.ok || res.type === 'opaque') {
+                            valid++;
+                            validUrls.push(url);
+                            validResult.innerHTML += `<div>${url}</div>`;
+                            return true;
+                        }
+                        throw new Error('Invalid response');
+                    } catch (error) {
+                        invalid++;
+                        invalidResult.innerHTML += `<div>${url}</div>`;
+                        return false;
+                    }
+                };
+
+                // Concurrent URL checking with limit
+                const concurrencyLimit = 10;
+                for (let i = 0; i < urls.length; i += concurrencyLimit) {
+                    const batch = urls.slice(i, i + concurrencyLimit);
+                    await Promise.allSettled(batch.map(checkUrl));
+                }
+
+                // Update final results
+                totalResult.innerHTML += `<div>Valid URLs: ${valid}</div>
+                                          <div>Invalid URLs: ${invalid}</div>`;
+
+                // Create downloadable file for valid URLs
+                if (validUrls.length > 0) {
+                    const blob = new Blob([validUrls.join('\n')], { type: 'text/plain' });
+                    const url = URL.createObjectURL(blob);
+                    
+                    downloadBtn.href = url;
+                    downloadBtn.download = 'valid_urls.txt';
+                    downloadBtn.classList.remove('d-none');
+                }
+
+                // Hide loader
+                loader.style.display = 'none';
+
+            } catch (error) {
+                console.error('URL checking failed:', error);
+                totalResult.innerHTML = `Error: ${error.message}`;
+                loader.style.display = 'none';
+            }
+        }
+
+        // Language Toggle Functionality
+        document.getElementById('langToggle').addEventListener('click', function() {
+            const htmlTag = document.documentElement;
+            if (htmlTag.lang === 'bn') {
+                htmlTag.lang = 'en';
+                document.title = 'BDIX FTP Server URL Checker';
+            } else {
+                htmlTag.lang = 'bn';
+                document.title = 'BDIX FTP সার্ভার URL Checker';
+            }
+        });
+
+        // Run on page load
+        window.addEventListener('load', checkUrls);
+    </script>
+</body>
+</html>
